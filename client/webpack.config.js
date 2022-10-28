@@ -18,7 +18,30 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      
+      new HtmlWebpackPlugin({
+        template: "./index.js",
+        title: "Text Editor"
+      }),
+      new InjectManifest({
+        swSrc: "./src-sw.js",
+        swDest: "service-worker.js"
+      }),
+      new WebpackPwaManifest({
+        name: "PWA Text Editor",
+        short_name: "Text Editor",
+        description: "A PWA Text Editor that works with little to no interner connection!",
+        background_color: "#85b0e6",
+        theme_color: "#85b0e6",
+        start_url: "./",
+        publicPath: "./",
+        icons: [
+          {
+            src: path.resolve("src/images/logo.png"),
+            sizes: [96, 128, 192, 265, 384, 512],
+            destination: path.join('assests', 'icons')
+          }
+        ],
+      }),
     ],
 
     module: {
