@@ -8,7 +8,7 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = () => {
   return {
-    mode: 'development',
+    mode: 'production',
     entry: {
       main: './src/js/index.js',
       install: './src/js/install.js'
@@ -20,11 +20,12 @@ module.exports = () => {
     plugins: [
       new HtmlWebpackPlugin({
         template: "./index.js",
-        title: "Text Editor"
+        title: "Text Editor",
+        inject: true
       }),
       new InjectManifest({
         swSrc: "./src-sw.js",
-        swDest: "service-worker.js"
+        swDest: "src-sw.js"
       }),
       new WebpackPwaManifest({
         name: "PWA Text Editor",
@@ -34,6 +35,8 @@ module.exports = () => {
         theme_color: "#85b0e6",
         start_url: "./",
         publicPath: "./",
+        inject: true,
+        fingerprints: false,
         icons: [
           {
             src: path.resolve("src/images/logo.png"),
@@ -57,7 +60,10 @@ module.exports = () => {
             loader: 'babel-loader',
             options: {
               presets: [
-                ['@babel/preset-env', { targets: "defaults" }]
+                '@babel/preset-env', { targets: "defaults" }
+              ],
+              plugins: [
+                '@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'
               ]
             }
           }
